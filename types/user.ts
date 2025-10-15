@@ -1,15 +1,6 @@
-export interface GoogleUser {
-    "id": string,
-    "name": string,
-    "givenName": string,
-    "familyName": string,
-    "email": string,
-    "photo": string | null
-}
-
 export interface User {
-    g_id: string,
+    g_id?: string | null,
     username: string,
-    email: string,
-    profile_pic: string | null
+    email?: string | null,
+    profile_pic?: string | null
 }
