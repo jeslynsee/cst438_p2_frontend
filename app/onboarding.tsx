@@ -13,19 +13,20 @@ import { useSession } from "@/hooks/ctx";
 import useProfile from "@/hooks/useProfile";
 
 export default function OnboardingScreen() {
-    const { session } = useSession();
+    // const { session } = useSession();
     const { control, handleSubmit, formState: { errors }, register, reset } = useForm<OnboardingForm>({
         mode: 'onChange'
     });
 
     const onSubmit = async (data: any) => {
-        await createProfile({
-            user_id: Number(session) || 0,
-            age: data.age,
-            weight: data.weight,
-            height: data.heightFeet * 12 + data.heightInches,
-        });
-        useProfile()
+        // Mock submission - just navigate to home
+        // await createProfile({
+        //     user_id: Number(session) || 0,
+        //     age: data.age,
+        //     weight: data.weight,
+        //     height: data.heightFeet * 12 + data.heightInches,
+        // });
+        // useProfile()
         router.replace("/");
     };
 
@@ -48,7 +49,7 @@ export default function OnboardingScreen() {
                                     style={$numericInput}
                                     onBlur={onBlur}
                                     onChangeText={(text) => onChange(Number(text))}
-                                    value={value}
+                                    value={value ? String(value) : ""}
                                     keyboardType="numeric"
                                     placeholder="5"
                                 />
@@ -70,7 +71,7 @@ export default function OnboardingScreen() {
                                     style={$numericInput}
                                     onBlur={onBlur}
                                     onChangeText={(text) => onChange(Number(text))}
-                                    value={value}
+                                    value={value ? String(value) : ""}
                                     keyboardType="numeric"
                                     placeholder="11"
                                 />
@@ -98,7 +99,7 @@ export default function OnboardingScreen() {
                                     style={$numericInput}
                                     onBlur={onBlur}
                                     onChangeText={(text) => onChange(Number(text))}
-                                    value={value}
+                                    value={value ? String(value) : ""}
                                     keyboardType="numeric"
                                     placeholder="150"
                                 />
@@ -125,7 +126,7 @@ export default function OnboardingScreen() {
                                     style={$numericInput}
                                     onBlur={onBlur}
                                     onChangeText={(text) => onChange(Number(text))}
-                                    value={value}
+                                    value={value ? String(value) : ""}
                                     keyboardType="numeric"
                                     placeholder="25"
                                 />

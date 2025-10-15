@@ -10,14 +10,13 @@ import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { HelloWave } from "@/components/HelloWave";
 import { useSession } from "@/hooks/ctx";
-import { GoogleUser } from "@/types/user";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "@/types/navigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useProfile from "@/hooks/useProfile";
 import { ProfilePic } from "@/components/ProfilePic";
 
-// Default profile picture (Replace later with Google Profile)
+// Default profile picture
 const DEFAULT_PROFILE_PIC = require("@/assets/images/default-profile.png");
 
 // Static Workout Split Data (Replace later with API data)
