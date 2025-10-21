@@ -4,7 +4,7 @@ import { useStorageState } from './useStorageState';
 import { createUser, getUserByEmail, getUserByUsername } from '@/db/user';
 
 const AuthContext = createContext<{
-  signIn: (username: string, email?: string) => Promise<void>;
+  signIn: (name: string, email?: string) => Promise<void>;
   signOut: () => void;
   session?: string | null;
   isLoading: boolean;
@@ -32,11 +32,11 @@ export function SessionProvider({ children }: PropsWithChildren) {
   return (
     <AuthContext.Provider
       value={{
-        signIn: async (username: string, email?: string) => {
+        signIn: async (name: string, email?: string) => {
           // Try finding an existing user by email or username, else create one
           const existing = email
             ? await getUserByEmail(email)
-            : await getUserByUsername(username);
+            : await getUserByUsername(name);
 
           if (existing) {
             setSession(existing.id.toString());
@@ -44,7 +44,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
           }
 
           const newUserId = await createUser({
-            username,
+            name,
             email: email ?? undefined,
             profile_pic: null,
           });

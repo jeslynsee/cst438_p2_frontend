@@ -1,23 +1,24 @@
 //@ts-nocheck for removing ts related errors
 import React, { useState } from "react";
-import { Button, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { Button, StyleSheet, TextInput, TouchableOpacity, View, Text } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useSession } from "@/hooks/ctx";
 import { router } from "expo-router";
 
+
 import FlexZoneHeader from "@/components/FlexZoneHeader";
 
 export default function AuthScreen() {
   const { signIn } = useSession();
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const handleSignIn = async () => {
     try {
-      if (!username && !email) {
-        setError("Enter a username or email");
+      if (!name && !email) {
+        setError("Enter a name or email");
         return;
       }
       await signIn(username.trim(), email.trim() || undefined);
@@ -38,9 +39,9 @@ export default function AuthScreen() {
       <ThemedView>
         <View style={{ gap: 12, width: 260 }}>
           <TextInput
-            placeholder="Username"
-            value={username}
-            onChangeText={setUsername}
+            placeholder="Name"
+            value={name}
+            onChangeText={setName}
             style={{ borderWidth: 1, borderColor: '#ccc', padding: 10, borderRadius: 8 }}
           />
           <TextInput
@@ -61,7 +62,7 @@ export default function AuthScreen() {
       <ThemedView>
         <ThemedText type="default">Don't have an account?</ThemedText>
         <TouchableOpacity onPress={switchToSignUp}>
-          <Text>Sign up here</Text>
+          <Text style={{color: "blue"}}>Sign up here</Text>
         </TouchableOpacity>
       </ThemedView>
     </ThemedView>
