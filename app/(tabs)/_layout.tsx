@@ -8,7 +8,7 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useSession } from '@/hooks/ctx';
-import { getProfile } from '@/db/profile';
+// import { getProfile } from '@/db/profile';
 import { ProfilePic } from '@/components/ProfilePic';
 import { Redirect, Tabs, useRouter } from 'expo-router';
 
@@ -22,24 +22,24 @@ export default function TabLayout() {
     return null;
   }
 
-  useEffect(() => {
-    getProfile(session).then((res) => {
-      if (res && session) {
-        router.push('/(tabs)')
-      } else {
-        router.push('/sign-up')
-      }
-    }).catch(err => {
-      console.error(err)
-    })
-  }, [])
+  // useEffect(() => {
+  //   getProfile(session).then((res) => {
+  //     if (res && session) {
+  //       router.push('/(tabs)')
+  //     } else {
+  //       router.push('/sign-up')
+  //     }
+  //   }).catch(err => {
+  //     console.error(err)
+  //   })
+  // }, [])
 
   // handle sign out function under, using useEffect, so we don't get "fewer hooks rendered than expected error"
   useEffect(() => {
     if (session === null) { // session gets set to null when doing sign out process, so doing comp here to send user back to login pg
       router.replace("/auth");
     }
-  }, []);
+  }, [session]); // have it depend on session, if session turns null => reroute to login page
 
   return (
     <Tabs
