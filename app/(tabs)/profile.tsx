@@ -1,26 +1,45 @@
-import React from "react";
-import { Button, StyleSheet, TouchableOpacity } from "react-native";
+import { useEffect, useState } from "react";
+import { Button, StyleSheet, TouchableOpacity} from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useSession } from "@/hooks/ctx";
-import useProfile from "@/hooks/useProfile";
 import { ProfilePic } from "@/components/ProfilePic";
 
 export default function ProfileScreen() {
-  const { signOut } = useSession();
-  const { profile } = useProfile();
-  console.log(profile);
+//TODO: get sign out to work properly. getting render less hooks error
+  const { session, signOut } = useSession();
+  const [userName, setUserName] = useState("");
+
+  // grabbing user's name to display, using useEffect, so we get info before page loads
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const response = await fetch("https://cst438-p2-backend-4b767ba8e13e.herokuapp.com/api/users");
+        const users = await response.json();
+  
+        // Find the user that matches the current session’s email
+        const foundUser = users.find(user => user.email === session);
+        if (foundUser) {
+          setUserName(foundUser.name);
+        }
+      } catch (err) {
+        console.error("Error fetching user data:", err);
+      }
+    };
+  
+    fetchUserName();
+  }, [session]);
 
   return (
     <ThemedView style={styles.container}>
       <ProfilePic style={styles.profilePic} />
 
       <ThemedText type="title" style={styles.username}>
-        {profile?.user?.username}
+        {userName}
       </ThemedText>
 
       <ThemedText type="subtitle" style={styles.email}>
-        {profile?.user?.email}
+        {session}
       </ThemedText>
 
       <TouchableOpacity style={styles.button} onPress={signOut}>

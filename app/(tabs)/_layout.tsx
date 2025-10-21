@@ -10,11 +10,12 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { useSession } from '@/hooks/ctx';
 import { getProfile } from '@/db/profile';
 import { ProfilePic } from '@/components/ProfilePic';
-import { Redirect } from 'expo-router';
+import { Redirect, Tabs, useRouter } from 'expo-router';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { session, isLoading } = useSession();
+  const router = useRouter();
 
  // sessions checking - is user logged in?
   if (isLoading) {
