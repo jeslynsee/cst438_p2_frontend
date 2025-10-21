@@ -16,7 +16,7 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { session, isLoading } = useSession();
 
-  // Removed session check - allow free navigation
+ // sessions checking - is user logged in?
   if (isLoading) {
     return null;
   }

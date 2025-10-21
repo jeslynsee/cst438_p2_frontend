@@ -14,15 +14,44 @@ export default function SignUp() {
     const [password, setPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
 
-    const handleSignUp = () => {
-        setErrorMsg("");
-        // Alert.alert("Sign up in progress!");
-        if (!name && !email && !password) {
+    const handleSignUp = async () => {
+        setErrorMsg(""); // reset error message to be empty each button press
+        if (!name && !email && !password) { // fields cannot be empty
             setErrorMsg("Sign up failed. Please enter valid values in fields.");
-        } else if (!name || !email || !password) {
+
+        } else if (!name || !email || !password) { // if ANY field is empty
+
             setErrorMsg("Missing field")
+            
         } else {
-            // call to our backend to populate user table with this new user and redirect user to login page
+            // attempting to put user into our user table. no else-if block checking if user exists already because 
+            // handled in backend through email check
+            try {
+                const response = await fetch("https://cst438-p2-backend-4b767ba8e13e.herokuapp.com/api/users", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json', // Indicate that the body content is JSON
+                        'Accept': 'application/json', // Indicate that the client accepts JSON responses
+                      },
+                      body: JSON.stringify({ name, email, password })
+                });
+
+                // response message checking done in try block because we get the response from doing the fetch call, so 
+                // doesn't come as error message in catch block
+                if (response.status === 201) {
+                    Alert.alert("Account created! Please log in to continue.");
+                    router.push("/auth");
+                  } else if (response.status === 409) {
+                    setErrorMsg("User already exists with that email.");
+                  } else {
+                    setErrorMsg("Sign up failed. Please try again.");
+                  }
+
+            } catch (error) {
+                console.log("Error is: " + error);
+                // Alert.alert("Error: " + error);
+                  
+            }
         }
 
     }

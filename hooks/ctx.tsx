@@ -1,61 +1,37 @@
-//@ts-nocheck for removing ts related errors
-import { useContext, createContext, type PropsWithChildren } from 'react';
-import { useStorageState } from './useStorageState';
-import { createUser, getUserByEmail, getUserByUsername } from '@/db/user';
+//@ts-nocheck
+import { useContext, createContext, type PropsWithChildren } from "react";
+import { useStorageState } from "./useStorageState";
 
-const AuthContext = createContext<{
-  signIn: (name: string, email?: string) => Promise<void>;
-  signOut: () => void;
-  session?: string | null;
-  isLoading: boolean;
-}>({
-  signIn: async () => {},
-  signOut: () => null,
+const AuthContext = createContext({
+  signIn: async (email: string) => {},
+  signOut: () => {},
   session: null,
   isLoading: false,
 });
 
 export function useSession() {
   const value = useContext(AuthContext);
-  if (process.env.NODE_ENV !== 'production') {
-    if (!value) {
-      throw new Error('useSession must be wrapped in a <SessionProvider />');
-    }
-  }
-
+  if (!value) throw new Error("useSession must be wrapped in a <SessionProvider />");
   return value;
 }
 
 export function SessionProvider({ children }: PropsWithChildren) {
-  const [[isLoading, session], setSession] = useStorageState('session');
+  const [[isLoading, session], setSession] = useStorageState("session");
 
   return (
     <AuthContext.Provider
       value={{
-        signIn: async (name: string, email?: string) => {
-          // Try finding an existing user by email or username, else create one
-          const existing = email
-            ? await getUserByEmail(email)
-            : await getUserByUsername(name);
-
-          if (existing) {
-            setSession(existing.id.toString());
-            return;
-          }
-
-          const newUserId = await createUser({
-            name,
-            email: email ?? undefined,
-            profile_pic: null,
-          });
-          setSession(newUserId.toString());
+        signIn: async (email: string) => {
+          // store email as the active session
+          setSession(email);
         },
         signOut: async () => {
           setSession(null);
         },
         session,
         isLoading,
-      }}>
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
