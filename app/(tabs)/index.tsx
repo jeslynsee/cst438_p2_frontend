@@ -1,5 +1,5 @@
 //@ts-nocheck for removing ts related errors
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -14,7 +14,6 @@ import { useSession } from "@/hooks/ctx";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "@/types/navigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import useProfile from "@/hooks/useProfile";
 import { ProfilePic } from "@/components/ProfilePic";
 
 // Default profile picture
@@ -32,7 +31,6 @@ const workoutSplit = [
 ];
 
 export default function HomeScreen() {
-  const { profile } = useProfile();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [workoutData, setWorkoutData] = useState(workoutSplit);
   const [userName, setUserName] = useState("");

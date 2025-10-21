@@ -1,6 +1,6 @@
 
 //@ts-nocheck for removing ts related errorsimport { Redirect, router, Tabs } from 'expo-router';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
@@ -22,10 +22,6 @@ export default function TabLayout() {
     return null;
   }
 
-  if (!session) {
-    return <Redirect href="/auth" />;
-  }
-
   useEffect(() => {
     getProfile(session).then((res) => {
       if (res && session) {
@@ -37,6 +33,13 @@ export default function TabLayout() {
       console.error(err)
     })
   }, [])
+
+  // handle sign out function under, using useEffect, so we don't get "fewer hooks rendered than expected error"
+  useEffect(() => {
+    if (session === null) { // session gets set to null when doing sign out process, so doing comp here to send user back to login pg
+      router.replace("/auth");
+    }
+  }, []);
 
   return (
     <Tabs

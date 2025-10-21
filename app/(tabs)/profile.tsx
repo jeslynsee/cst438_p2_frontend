@@ -1,14 +1,17 @@
+//@ts-nocheck for removing ts related errors
 import { useEffect, useState } from "react";
 import { Button, StyleSheet, TouchableOpacity} from "react-native";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useSession } from "@/hooks/ctx";
 import { ProfilePic } from "@/components/ProfilePic";
+import { useRouter } from "expo-router";
 
 export default function ProfileScreen() {
 //TODO: get sign out to work properly. getting render less hooks error
   const { session, signOut } = useSession();
   const [userName, setUserName] = useState("");
+  const router = useRouter();
 
   // grabbing user's name to display, using useEffect, so we get info before page loads
   useEffect(() => {
@@ -30,6 +33,10 @@ export default function ProfileScreen() {
     fetchUserName();
   }, [session]);
 
+  const handleSignOut = async () => {
+    await signOut();
+  }
+
   return (
     <ThemedView style={styles.container}>
       <ProfilePic style={styles.profilePic} />
@@ -42,7 +49,7 @@ export default function ProfileScreen() {
         {session}
       </ThemedText>
 
-      <TouchableOpacity style={styles.button} onPress={signOut}>
+      <TouchableOpacity style={styles.button} onPress={handleSignOut}>
         <ThemedText type="default" style={styles.buttonText}>
           Sign Out
         </ThemedText>
