@@ -5,16 +5,17 @@ import axios from 'axios';
 export const getExercises = async (params = {}) => {
     const options = {
         method: 'GET',
-        url: 'https://exercises-by-api-ninjas.p.rapidapi.com/v1/exercises',
-        params: { ...params },
-        headers: {
-            'x-rapidapi-key': '54ec59fd7amsh724c1940bbcd393p111f66jsnd567f0225d39',
-            'x-rapidapi-host': 'exercises-by-api-ninjas.p.rapidapi.com'
-        }
+        url: 'https://cst438-p2-backend-4b767ba8e13e.herokuapp.com/exercises',
+        // params: { ...params },
+        // headers: {
+        //     'x-rapidapi-key': '54ec59fd7amsh724c1940bbcd393p111f66jsnd567f0225d39',
+        //     'x-rapidapi-host': 'exercises-by-api-ninjas.p.rapidapi.com'
+        // }
     };
 
     try {
         const response = await axios.request(options);
+        console.log('Exercises fetched:', response.data);
         return response.data;
     } catch (error) {
         console.error(error);
@@ -27,7 +28,7 @@ export const getExercises = async (params = {}) => {
 export const getExerciseDetail = async (params = {}) => {
     const options = {
         method: 'GET',
-        url: 'https://exercises-by-api-ninjas.p.rapidapi.com/v1/exercises',
+        url: 'https://cst438-p2-backend-4b767ba8e13e.herokuapp.com/exercises',
         params: { name: 'curl', ...params },
         headers: {
             'x-rapidapi-key': '54ec59fd7amsh724c1940bbcd393p111f66jsnd567f0225d39',
