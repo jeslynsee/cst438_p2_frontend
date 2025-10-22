@@ -22,24 +22,10 @@ export default function TabLayout() {
     return null;
   }
 
-  // useEffect(() => {
-  //   getProfile(session).then((res) => {
-  //     if (res && session) {
-  //       router.push('/(tabs)')
-  //     } else {
-  //       router.push('/sign-up')
-  //     }
-  //   }).catch(err => {
-  //     console.error(err)
-  //   })
-  // }, [])
-
-  // handle sign out function under, using useEffect, so we don't get "fewer hooks rendered than expected error"
-  useEffect(() => {
-    if (session === null) { // session gets set to null when doing sign out process, so doing comp here to send user back to login pg
-      router.replace("/auth");
-    }
-  }, [session]); // have it depend on session, if session turns null => reroute to login page
+  // replaced a useEffect previously had, with this. sees if session is null AKA user is not signed in, reroutes to login
+  if (session === null) {
+    return <Redirect href="/auth" />;
+  }
 
   return (
     <Tabs
