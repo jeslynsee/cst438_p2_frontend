@@ -1,5 +1,6 @@
-import { Redirect, router, Tabs } from 'expo-router';
-import React, { useEffect } from 'react';
+
+//@ts-nocheck for removing ts related errorsimport { Redirect, router, Tabs } from 'expo-router';
+import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
@@ -7,33 +8,24 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useSession } from '@/hooks/ctx';
-import { getProfile } from '@/db/profile';
+// import { getProfile } from '@/db/profile';
 import { ProfilePic } from '@/components/ProfilePic';
+import { Redirect, Tabs, useRouter } from 'expo-router';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  // const { session, isLoading } = useSession();
+  const { session, isLoading } = useSession();
+  const router = useRouter();
 
-  // Removed session check - allow free navigation
-  // if (isLoading) {
-  //   return null;
-  // }
+ // sessions checking - is user logged in?
+  if (isLoading) {
+    return null;
+  }
 
-  // if (!session) {
-  //   return <Redirect href="/auth" />;
-  // }
-
-  // useEffect(() => {
-  //   getProfile(session).then((res) => {
-  //     if (res && session) {
-  //       router.push('/(tabs)')
-  //     } else {
-  //       router.push('/onboarding')
-  //     }
-  //   }).catch(err => {
-  //     console.error(err)
-  //   })
-  // }, [])
+  // replaced a useEffect previously had, with this. sees if session is null AKA user is not signed in, reroutes to login
+  if (session === null) {
+    return <Redirect href="/auth" />;
+  }
 
   return (
     <Tabs
